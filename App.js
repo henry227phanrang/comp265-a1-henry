@@ -33,9 +33,9 @@ export default function App() {
         {showTranslation && <Text style={styles.translation}>{words[index].english}</Text>}
       </TouchableOpacity>
 
-      {/* ✅ Button to Play Pronunciation */}
-      <TouchableOpacity onPress={speakWord} style={styles.button}>
-        <Text style={styles.buttonText}>🔊 Hear Pronunciation</Text>
+      {/* ✅ New Pronunciation Button with Gray Background */}
+      <TouchableOpacity onPress={speakWord} style={styles.speakerButton}>
+        <Text style={styles.speakerText}>🔊</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={nextWord} style={styles.button}>
@@ -63,6 +63,18 @@ const styles = StyleSheet.create({
   image: { width: 100, height: 100, marginBottom: 10 },
   word: { fontSize: 32, fontWeight: "bold" },
   translation: { fontSize: 24, color: "gray", marginTop: 10 },
+
+  // ✅ Style for the New Speaker Button (Gray Background)
+  speakerButton: {
+    backgroundColor: "#f5f5f5", // ✅ Same as app background
+    padding: 15,
+    borderRadius: 50, // Circular button
+    borderWidth: 1, // Light border for better visibility
+    borderColor: "#ccc", // Light gray border
+    marginBottom: 10,
+  },
+  speakerText: { fontSize: 24 },
+
   button: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginTop: 10 },
   buttonText: { color: "white", fontSize: 18 },
 });
