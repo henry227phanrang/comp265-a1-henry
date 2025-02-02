@@ -7,7 +7,6 @@ const words = [
   { french: "Pardon", english: "Excuse me", image: "https://cdn-icons-png.flaticon.com/512/1047/1047712.png" },
   { french: "Au revoir", english: "Goodbye", image: "https://cdn-icons-png.flaticon.com/512/1047/1047713.png" },
 ];
-
 export default function App() {
   const [index, setIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
@@ -38,9 +37,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#f5f5f5" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  flashcard: { width: 250, height: 150, justifyContent: "center", alignItems: "center", backgroundColor: "white", borderRadius: 10, elevation: 5, shadowColor: "#000", shadowOpacity: 0.2, marginBottom: 20 },
+  flashcard: { 
+    width: 250, 
+    height: 150, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    backgroundColor: "white", 
+    borderRadius: 10, 
+    elevation: 5, 
+    shadowColor: "#000", 
+    shadowOpacity: 0.2, 
+    marginBottom: 20 
+  },
   word: { fontSize: 32, fontWeight: "bold" },
   translation: { fontSize: 24, color: "gray", marginTop: 10 },
   button: { backgroundColor: "blue", padding: 10, borderRadius: 5 },
   buttonText: { color: "white", fontSize: 18 },
 });
+
