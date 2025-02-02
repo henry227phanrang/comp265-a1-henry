@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 
 const words = [
   { french: "Bonjour", english: "Hello", image: "https://cdn-icons-png.flaticon.com/512/1047/1047711.png" },
@@ -20,12 +20,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>French Flashcards</Text>
-
+  
       <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.flashcard}>
+        {/* Image Added Here */}
+        <Image source={{ uri: words[index].image }} style={styles.image} />
         <Text style={styles.word}>{words[index].french}</Text>
         {showTranslation && <Text style={styles.translation}>{words[index].english}</Text>}
       </TouchableOpacity>
-
+  
       <TouchableOpacity onPress={nextWord} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
