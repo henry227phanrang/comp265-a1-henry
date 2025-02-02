@@ -1,3 +1,4 @@
+import * as Speech from "expo-speech";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 
@@ -17,15 +18,24 @@ export default function App() {
     setIndex((prevIndex) => (prevIndex + 1) % words.length); // Loop back after last word
   };
 
+  // ✅ Function to Play Pronunciation
+  const speakWord = () => {
+    Speech.speak(words[index].french, { language: "fr" });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>French Flashcards</Text>
 
       <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.flashcard}>
-        {/* Image Added Here */}
         <Image source={{ uri: words[index].image }} style={styles.image} />
         <Text style={styles.word}>{words[index].french}</Text>
         {showTranslation && <Text style={styles.translation}>{words[index].english}</Text>}
+      </TouchableOpacity>
+
+      {/* ✅ Button to Play Pronunciation */}
+      <TouchableOpacity onPress={speakWord} style={styles.button}>
+        <Text style={styles.buttonText}>🔊 Hear Pronunciation</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={nextWord} style={styles.button}>
@@ -40,7 +50,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
   flashcard: { 
     width: 250, 
-    height: 200, // Increased height to fit image
+    height: 200, 
     justifyContent: "center", 
     alignItems: "center", 
     backgroundColor: "white", 
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2, 
     marginBottom: 20 
   },
-  image: { width: 100, height: 100, marginBottom: 10 }, // ✅ ADDED IMAGE STYLE
+  image: { width: 100, height: 100, marginBottom: 10 },
   word: { fontSize: 32, fontWeight: "bold" },
   translation: { fontSize: 24, color: "gray", marginTop: 10 },
   button: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginTop: 10 },
