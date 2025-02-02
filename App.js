@@ -1,6 +1,6 @@
 import * as Speech from "expo-speech";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, ScrollView, Switch } from "react-native";
 
 const words = [
   { french: "Bonjour", english: "Hello", image: "https://cdn-icons-png.flaticon.com/512/5821/5821940.png" },
@@ -12,28 +12,57 @@ const words = [
 export default function App() {
   const [index, setIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const nextWord = () => {
     setShowTranslation(false); // Hide translation when moving to next word
     setIndex((prevIndex) => (prevIndex + 1) % words.length); // Loop back after last word
   };
 
-  // ✅ Function to Play Pronunciation
   const speakWord = () => {
     Speech.speak(words[index].french, { language: "fr" });
   };
 
+  // Filter words based on user input
+  const filteredWords = words.filter(word =>
+    word.french.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, darkMode ? styles.darkContainer : styles.lightContainer]}>
       <Text style={styles.title}>French Flashcards</Text>
 
-      <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.flashcard}>
-        <Image source={{ uri: words[index].image }} style={styles.image} />
-        <Text style={styles.word}>{words[index].french}</Text>
-        {showTranslation && <Text style={styles.translation}>{words[index].english}</Text>}
+      {/* ✅ Switch for Dark Mode */}
+      <View style={styles.switchContainer}>
+        <Text style={styles.switchLabel}>{darkMode ? "Dark Mode" : "Light Mode"}</Text>
+        <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} />
+      </View>
+
+      {/* ✅ TextInput for Searching Words */}
+      <TextInput
+        style={styles.input}
+        placeholder="Type a French word..."
+        onChangeText={setSearchText}
+        value={searchText}
+      />
+
+      {/* ✅ Scrollable List of Flashcards */}
+      <ScrollView style={styles.scrollView}>
+        {filteredWords.map((word, i) => (
+          <View key={i} style={styles.flashcard}>
+            <Image source={{ uri: word.image }} style={styles.image} />
+            <Text style={styles.word}>{word.french}</Text>
+            {showTranslation && <Text style={styles.translation}>{word.english}</Text>}
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* ✅ Buttons */}
+      <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.button}>
+        <Text style={styles.buttonText}>{showTranslation ? "Hide Translation" : "Show Translation"}</Text>
       </TouchableOpacity>
 
-      {/* ✅ New Pronunciation Button with Gray Background */}
       <TouchableOpacity onPress={speakWord} style={styles.speakerButton}>
         <Text style={styles.speakerText}>🔊</Text>
       </TouchableOpacity>
@@ -46,8 +75,18 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#f5f5f5" },
+  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
+  lightContainer: { backgroundColor: "#f5f5f5" },
+  darkContainer: { backgroundColor: "#333" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+  
+  switchContainer: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
+  switchLabel: { fontSize: 16, marginRight: 10, color: "#555" },
+
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 8, width: 250, marginBottom: 10, borderRadius: 5, backgroundColor: "white" },
+
+  scrollView: { maxHeight: 300, width: "100%" },
+
   flashcard: { 
     width: 250, 
     height: 200, 
@@ -60,17 +99,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2, 
     marginBottom: 20 
   },
+
   image: { width: 100, height: 100, marginBottom: 10 },
   word: { fontSize: 32, fontWeight: "bold" },
   translation: { fontSize: 24, color: "gray", marginTop: 10 },
 
-  // ✅ Style for the New Speaker Button (Gray Background)
   speakerButton: {
-    backgroundColor: "#f5f5f5", // ✅ Same as app background
+    backgroundColor: "#f5f5f5",
     padding: 15,
-    borderRadius: 50, // Circular button
-    borderWidth: 1, // Light border for better visibility
-    borderColor: "#ccc", // Light gray border
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#ccc",
     marginBottom: 10,
   },
   speakerText: { fontSize: 24 },
