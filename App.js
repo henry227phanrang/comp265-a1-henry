@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const words = [
-  { french: "Bonjour", english: "Hello" },
-  { french: "Merci", english: "Thank you" },
-  { french: "Pardon", english: "Excuse me" },
-  { french: "Au revoir", english: "Goodbye" },
+  { french: "Bonjour", english: "Hello", image: "https://cdn-icons-png.flaticon.com/512/1047/1047711.png" },
+  { french: "Merci", english: "Thank you", image: "https://cdn-icons-png.flaticon.com/512/1047/1047710.png" },
+  { french: "Pardon", english: "Excuse me", image: "https://cdn-icons-png.flaticon.com/512/1047/1047712.png" },
+  { french: "Au revoir", english: "Goodbye", image: "https://cdn-icons-png.flaticon.com/512/1047/1047713.png" },
 ];
 
 export default function App() {
