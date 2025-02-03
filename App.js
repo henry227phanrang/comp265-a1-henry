@@ -20,12 +20,10 @@ export default function App() {
     setIndex((prevIndex) => (prevIndex + 1) % words.length);
   };
 
-  // ✅ Updated to speak any selected word
   const speakWord = (word) => {
     Speech.speak(word, { language: "fr" });
   };
 
-  // Filter words based on user input
   const filteredWords = words.filter((word) =>
     word.french.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -34,13 +32,13 @@ export default function App() {
     <View style={[styles.container, darkMode ? styles.darkContainer : styles.lightContainer]}>
       <Text style={styles.title}>French Flashcards</Text>
 
-      {/* ✅ Switch for Dark Mode */}
+      {/* ✅ Dark Mode Switch */}
       <View style={styles.switchContainer}>
         <Text style={styles.switchLabel}>{darkMode ? "Dark Mode" : "Light Mode"}</Text>
         <Switch value={darkMode} onValueChange={() => setDarkMode(!darkMode)} />
       </View>
 
-      {/* ✅ TextInput for Searching Words */}
+      {/* ✅ Search Input */}
       <TextInput
         style={styles.input}
         placeholder="Type a French word..."
@@ -48,28 +46,29 @@ export default function App() {
         value={searchText}
       />
 
-      {/* ✅ Scrollable List of Flashcards (Centered) */}
+      {/* ✅ Scrollable Flashcards (Centered Layout) */}
       <ScrollView contentContainerStyle={{ alignItems: "center" }} style={styles.scrollView}>
         {filteredWords.map((word, i) => (
           <View key={i} style={styles.flashcard}>
-            <Image source={{ uri: word.image }} style={styles.image} />
-            <Text style={styles.word}>{word.french}</Text>
-            {showTranslation && <Text style={styles.translation}>{word.english}</Text>}
-
-            {/* ✅ Play correct audio when clicking 🔊 */}
-            <TouchableOpacity onPress={() => speakWord(word.french)} style={styles.speakerButton}>
-              <Text style={styles.speakerText}>🔊</Text>
-            </TouchableOpacity>
+            {/* ✅ Wrap all flashcard content inside a View */}
+            <View style={styles.flashcardContent}>
+              <Image source={{ uri: word.image }} style={styles.image} />
+              <Text style={styles.word}>{word.french}</Text>
+              {showTranslation && <Text style={styles.translation}>{word.english}</Text>}
+              {/* ✅ Play correct audio inside the flashcard */}
+              <TouchableOpacity onPress={() => speakWord(word.french)} style={styles.speakerButton}>
+                <Text style={styles.speakerText}>🔊</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ))}
       </ScrollView>
 
-      {/* ✅ Show Translation Button */}
+      {/* ✅ Buttons */}
       <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.button}>
         <Text style={styles.buttonText}>{showTranslation ? "Hide Translation" : "Show Translation"}</Text>
       </TouchableOpacity>
 
-      {/* ✅ Next Word Button */}
       <TouchableOpacity onPress={nextWord} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
 
   flashcard: { 
     width: 250, 
-    height: 200, 
+    height: 250, /* ✅ Increased to fit everything */
     justifyContent: "center", 
     alignItems: "center", 
     backgroundColor: "white", 
@@ -100,22 +99,31 @@ const styles = StyleSheet.create({
     elevation: 5, 
     shadowColor: "#000", 
     shadowOpacity: 0.2, 
-    marginBottom: 20 
+    marginBottom: 20,
+    padding: 10, /* ✅ Added padding so content is well-spaced */
   },
 
-  image: { width: 100, height: 100, marginBottom: 10 },
-  word: { fontSize: 32, fontWeight: "bold" },
-  translation: { fontSize: 24, color: "gray", marginTop: 10 },
+  /* ✅ Ensure all flashcard content is centered properly */
+  flashcardContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
 
+  image: { width: 80, height: 80, marginBottom: 10 }, /* ✅ Reduced size */
+  word: { fontSize: 28, fontWeight: "bold" }, /* ✅ Slightly smaller */
+  translation: { fontSize: 22, color: "gray", marginTop: 10 },
+
+  /* ✅ Ensure the 🔊 button stays inside the flashcard */
   speakerButton: {
     backgroundColor: "#f5f5f5",
-    padding: 15,
+    padding: 10,
     borderRadius: 50,
     borderWidth: 1,
     borderColor: "#ccc",
-    marginBottom: 10,
+    marginTop: 10, /* ✅ Added margin to separate from text */
   },
-  speakerText: { fontSize: 24 },
+  speakerText: { fontSize: 22 },
 
   button: { backgroundColor: "blue", padding: 10, borderRadius: 5, marginTop: 10 },
   buttonText: { color: "white", fontSize: 18 },
