@@ -10,15 +10,9 @@ const words = [
 ];
 
 export default function App() {
-  const [index, setIndex] = useState(0);
   const [showTranslation, setShowTranslation] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [searchText, setSearchText] = useState("");
-
-  const nextWord = () => {
-    setShowTranslation(false);
-    setIndex((prevIndex) => (prevIndex + 1) % words.length);
-  };
 
   const speakWord = (word) => {
     Speech.speak(word, { language: "fr" });
@@ -50,7 +44,6 @@ export default function App() {
       <ScrollView contentContainerStyle={{ alignItems: "center" }} style={styles.scrollView}>
         {filteredWords.map((word, i) => (
           <View key={i} style={styles.flashcard}>
-            {/* ✅ Wrap all flashcard content inside a View */}
             <View style={styles.flashcardContent}>
               <Image source={{ uri: word.image }} style={styles.image} />
               <Text style={styles.word}>{word.french}</Text>
@@ -64,13 +57,9 @@ export default function App() {
         ))}
       </ScrollView>
 
-      {/* ✅ Buttons */}
+      {/* ✅ Show Translation Button */}
       <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.button}>
         <Text style={styles.buttonText}>{showTranslation ? "Hide Translation" : "Show Translation"}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={nextWord} style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
