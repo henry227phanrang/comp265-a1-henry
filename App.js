@@ -16,16 +16,17 @@ export default function App() {
   const [searchText, setSearchText] = useState("");
 
   const nextWord = () => {
-    setShowTranslation(false); // Hide translation when moving to next word
-    setIndex((prevIndex) => (prevIndex + 1) % words.length); // Loop back after last word
+    setShowTranslation(false);
+    setIndex((prevIndex) => (prevIndex + 1) % words.length);
   };
 
-  const speakWord = () => {
-    Speech.speak(words[index].french, { language: "fr" });
+  // ✅ Updated to speak any selected word
+  const speakWord = (word) => {
+    Speech.speak(word, { language: "fr" });
   };
 
   // Filter words based on user input
-  const filteredWords = words.filter(word =>
+  const filteredWords = words.filter((word) =>
     word.french.toLowerCase().includes(searchText.toLowerCase())
   );
 
@@ -47,26 +48,28 @@ export default function App() {
         value={searchText}
       />
 
-      {/* ✅ Scrollable List of Flashcards */}
-      <ScrollView style={styles.scrollView}>
+      {/* ✅ Scrollable List of Flashcards (Centered) */}
+      <ScrollView contentContainerStyle={{ alignItems: "center" }} style={styles.scrollView}>
         {filteredWords.map((word, i) => (
           <View key={i} style={styles.flashcard}>
             <Image source={{ uri: word.image }} style={styles.image} />
             <Text style={styles.word}>{word.french}</Text>
             {showTranslation && <Text style={styles.translation}>{word.english}</Text>}
+
+            {/* ✅ Play correct audio when clicking 🔊 */}
+            <TouchableOpacity onPress={() => speakWord(word.french)} style={styles.speakerButton}>
+              <Text style={styles.speakerText}>🔊</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
 
-      {/* ✅ Buttons */}
+      {/* ✅ Show Translation Button */}
       <TouchableOpacity onPress={() => setShowTranslation(!showTranslation)} style={styles.button}>
         <Text style={styles.buttonText}>{showTranslation ? "Hide Translation" : "Show Translation"}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={speakWord} style={styles.speakerButton}>
-        <Text style={styles.speakerText}>🔊</Text>
-      </TouchableOpacity>
-
+      {/* ✅ Next Word Button */}
       <TouchableOpacity onPress={nextWord} style={styles.button}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
   lightContainer: { backgroundColor: "#f5f5f5" },
   darkContainer: { backgroundColor: "#333" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  
+
   switchContainer: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
   switchLabel: { fontSize: 16, marginRight: 10, color: "#555" },
 
